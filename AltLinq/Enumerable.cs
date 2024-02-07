@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 namespace AltLinq
 {
@@ -12,8 +11,10 @@ namespace AltLinq
     
     public static partial class Enumerable
     {
-        public static bool All<TSource>(this IEnumerable<TSource> sources, Func<TSource, bool> p) => System.Linq.Enumerable.All(sources, p);
-        public static bool Any<TSource>(this IEnumerable<TSource> sources, Func<TSource, bool> predicate) => System.Linq.Enumerable.Any(sources, predicate);
+        public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) => System.Linq.Enumerable.All(source, predicate);
+        public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) => System.Linq.Enumerable.Any(source, predicate);
+        public static int Count<TSource>(this IEnumerable<TSource> source) => System.Linq.Enumerable.Count(source);
+        public static int Count<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) => System.Linq.Enumerable.Count(source, predicate);
 
         public static void Test()
         {

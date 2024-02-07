@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace AltLinq
+﻿namespace AltLinq
 {
     public static partial class Enumerable
     {

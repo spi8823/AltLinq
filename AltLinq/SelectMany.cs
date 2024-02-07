@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace AltLinq
 {
@@ -23,7 +18,6 @@ namespace AltLinq
     internal class SelectManyIterator<TSource, TCollection, TResult> : IAltEnumerable<TResult>
     {
         public TResult Current { get; private set; }
-        object IEnumerator.Current => Current;
 
         private IEnumerator<TSource> sourceEnumerator;
         private IEnumerator<TCollection> collectionEnumerator;

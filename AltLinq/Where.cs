@@ -2,16 +2,25 @@
 
 namespace AltLinq
 {
-    public class WhereEnumerable<T> : IAltEnumerable<T>
+    public static partial class Enumerable
+    {
+        public static IAltEnumerable<T> Where<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            var enumerable = ObjectPool<WhereIterator<T>>.Pop();
+            enumerable.Init(source, predicate);
+            return enumerable;
+        }
+    }
+
+    public class WhereIterator<T> : IAltEnumerable<T>
     {
         public T Current { get; private set; }
-        object IEnumerator.Current => Current;
 
         private IEnumerable<T> sourceEnumerable;
         private IEnumerator<T> sourceEnumerator;
         private Func<T, bool> predicate;
 
-        public WhereEnumerable() { }
+        public WhereIterator() { }
         internal void Init(IEnumerable<T> source, Func<T, bool> predicate)
         {
             sourceEnumerable = source;
@@ -43,7 +52,7 @@ namespace AltLinq
             sourceEnumerable = null;
             sourceEnumerator = null;
             predicate = null;
-            ObjectPool<WhereEnumerable<T>>.Push(this);
+            ObjectPool<WhereIterator<T>>.Push(this);
         }
     }
 }

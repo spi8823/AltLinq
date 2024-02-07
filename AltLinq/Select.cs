@@ -7,16 +7,25 @@ using System.Threading.Tasks;
 
 namespace AltLinq
 {
-    public class SelectEnumerable<TSource, TDistination> : IAltEnumerable<TDistination>
+    public static partial class Enumerable
+    {
+        public static IAltEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        {
+            var enumerable = ObjectPool<SelectIterator<TSource, TResult>>.Pop();
+            enumerable.Init(source, selector);
+            return enumerable;
+        }
+    }
+
+    public class SelectIterator<TSource, TDistination> : IAltEnumerable<TDistination>
     {
         public TDistination Current { get; private set; }
-        object IEnumerator.Current => Current;
 
         private IEnumerable<TSource> sourceEnumerable;
         private IEnumerator<TSource> sourceEnumerator;
         private Func<TSource, TDistination> selector;
 
-        public SelectEnumerable() { }
+        public SelectIterator() { }
 
         internal void Init(IEnumerable<TSource> source, Func<TSource, TDistination> selector)
         {
@@ -45,7 +54,7 @@ namespace AltLinq
             sourceEnumerable = null;
             sourceEnumerator = null;
             selector = null;
-            ObjectPool<SelectEnumerable<TSource, TDistination>>.Push(this);
+            ObjectPool<SelectIterator<TSource, TDistination>>.Push(this);
         }
     }
 }
